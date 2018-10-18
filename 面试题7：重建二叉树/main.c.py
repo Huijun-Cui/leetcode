@@ -1,10 +1,10 @@
-* m_pRight;
-};
+
 
 BinaryTreeNode* Construct(int* preorder,int* inorder,int length)
 {
     if(preorder == NULL || inorder == NULL || length <=0)
         return NULL;
+    return ConstructCore(preorder,preorder + length - 1,inorder,inorder + length -1);
 
 }
 BinaryTreeNode* ConstructCore(
