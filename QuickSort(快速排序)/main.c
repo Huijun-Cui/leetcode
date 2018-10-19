@@ -22,3 +22,15 @@ int Partition(int data[],int length,int start,int end)
     return  small
 
 }
+
+void QuickSoort(int data[],int length,int start,int end)
+{
+    if(start == end)
+        return;
+    int index = Partition(data,length,start,end);
+    if(index > start)
+        QuickSoort(data,length,start,index-1);
+    if(index < end)
+        QuickSoort(data,length,index-1,end);
+
+}
