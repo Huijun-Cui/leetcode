@@ -1,4 +1,12 @@
-# ????????
+
+    products[3] = 3;
+    int max = 0;
+    for(int i=4;i<=length;++i)
+    {
+        max = 0;
+        for(int j=1;j<=i/2;++j)
+        {
+            int product = products[j] * product[# ????????
 
 #include <iostream>
 #include <stack>
