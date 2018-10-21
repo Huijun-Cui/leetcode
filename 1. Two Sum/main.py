@@ -1,15 +1,21 @@
-class Solution(object):
-    def twoSum(self, nums, target):
-        """
-        :type nums: List[int]
-        :type target: int
-        :rtype: List[int]
-        """
-        for index1,i in enumerate(nums):
-            for index2,j in enumerate(nums[index1+1:]):
-                if i + j == target:
-                    return [index1,index1+1+index2]
-if __name__ == '__main__':
-    d = Solution()
-    result = d.twoSum([3, 2, 4,],6)
-    print(result)
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        // Only really have to search if there's more than 2 elements...
+        if(nums.size() > 2){
+            // So... the known solution is to use a hashmap with the stored differences...
+            map<int,int> summer; // <number,index>
+            for(int i=0;i<nums.size();i++){
+                int theDiff = target-nums[i];
+                if(summer.find(theDiff)==summer.end()){
+                    summer[nums[i]]=i;
+                } else {
+                    return {summer[theDiff],i};
+                }
+            }
+        }
+        //If there's only 2 elements, obviously that's the answer then...
+        return {0,1};
+    }
+};
+
