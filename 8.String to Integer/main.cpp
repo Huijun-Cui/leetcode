@@ -1,3 +1,6 @@
+
+// this is code returns wrong answer,but the description is really unclear.
+
 class Solution {
 public:
     int myAtoi(string str) {
