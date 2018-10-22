@@ -1,3 +1,5 @@
+
+# time out 
 class Solution {
 public:
     string longestPalindrome(string s) {
@@ -84,3 +86,31 @@ public:
 
     }
 };
+
+# Beat 99% 
+# Actually I dont know what is the main problem.Both of the algorithm is O(N2)
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        if (s.empty()) return "";
+        if (s.size() == 1) return s;
+        int max = 0;
+        int minstart;
+        for(int i =0;i<s.size();)
+        {
+            int j=i,k=i;
+            for(;s[k]==s[k+1]&& k+1 <s.size();k++){}
+            i = k+1;
+            while(j-1>=0 && k+1<s.size() && s[j-1] == s[k+1]){j--;k++;}
+            if(k-j+1 > max)
+            {
+                minstart = j;
+                max = k-j+1;
+            }
+
+        }
+        return  s.substr(minstart, max);
+    }
+};
+
+
