@@ -60,3 +60,31 @@ void PrintNumber(char* number)
     }
     printf("\t");
 }
+//-----------------------------------------------------------------------------
+void Print1ToMaxOfNDigits(int n)
+{
+    if(n<=0)
+        return;
+    char *number = new char[n+1];
+    number[n] = '\0';
+    for(int i=0;i<10;i++)
+    {
+        number[0] = i+'0';
+        Print1ToMaxOfNDigitsRecursively(number,n,0);
+    }
+    delete []number;
+
+}
+void Print1ToMaxOfNDigitsRecursively(char* number,int length,int index)
+{
+    if(index == length-1)
+    {
+        PrintNumber(number);
+        return;
+    }
+    for(int i=0;i<10;i++)
+    {
+        number[index + 1] = i + '0';
+        Print1ToMaxOfNDigitsRecursively(number,length,index+1);
+    }
+}
