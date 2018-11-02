@@ -28,3 +28,28 @@ int MoreThanHalfNum(int* numbers,int length)
         result = 0;
     return result;
 }
+// ??2
+
+int MoreThanHalfNum(int* numbers,int length)
+{
+    if(CheckInvalidArray(numbers,length))
+        return 0;
+    int result = numbers[0];
+    int times = 1;
+    for(int i=1;i<length;i++)
+    {
+        if(times == 0)
+        {
+            result = numbers[i];
+            times = 1;
+        }
+        else if(numbers[i] == result)
+            times++;
+        else
+            times--;
+    }
+    if(!CheckMoreThanHalf(numbers,length,result))
+        result= 0;
+
+    return result;
+}

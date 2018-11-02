@@ -24,3 +24,25 @@ void GetLeastNumbers(int* input,int n,int* output,int k)
     for(int i=0;i<k;++i)
         output[i] = input[i];
 }
+// ??2
+void GetLeastNumbers(const vector<int>&data,intSet& leastNumbers,int k)
+{
+    leastNumbers.clear();
+    if(k<1 ||data.size() < k)
+        return;
+    vector<int>::const_iterator iter = data.begin();
+    for(;iter !=data.end();++iter)
+    {
+        if(leastNumbers.size() < k)
+            leastNumbers.insert(*iter);
+        else
+        {
+            setIterator iterGreatest = leastNumbers.begin();
+            if(*iter < *(leastNumbers.begin()))
+            {
+                leastNumbers.erase(iterGreatest);
+                leastNumbers.insert(*iter);
+            }
+        }
+    }
+}
