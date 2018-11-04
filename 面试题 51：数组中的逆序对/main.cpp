@@ -37,3 +37,4 @@ int InversePairsCore(int* data,int* copy,int start,int end)
         copy[indexCopy--] = data[j];
     return left + right + count;
 }
+4
