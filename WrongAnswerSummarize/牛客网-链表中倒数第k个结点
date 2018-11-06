@@ -1,0 +1,38 @@
+/*
+struct ListNode {
+	int val;
+	struct ListNode *next;
+	ListNode(int x) :
+			val(x), next(NULL) {
+	}
+};*/
+class Solution {
+public:
+    ListNode* FindKthToTail(ListNode* pListHead, unsigned int k) {
+        if(pListHead == nullptr|| k==0) return nullptr;
+        ListNode* pFast = pListHead;
+        ListNode* pSlow = pListHead;
+        int i =0;
+        for(;i<k-1;i++)
+        {
+            if(pFast->next == nullptr)
+                return nullptr;
+            if(pFast->next)
+                pFast = pFast->next;
+        }
+
+        while(pFast->next!=nullptr)
+        {
+            pFast = pFast->next;
+            pSlow = pSlow->next;
+        }
+        return pSlow;
+
+
+    }
+};
+
+这个题，18行代码 到底用pFast_next还是 pFast一直很纠结。
+链表移动中 有两种移动方法，一种就是先看看是不是空指针再移动，另一种是先移动看看是不是空指针。
+这个例子中如果k数字比 节点数目大1，那pFast是移动到了一个空指针。再往下运行就会出现内存读写错误。
+
