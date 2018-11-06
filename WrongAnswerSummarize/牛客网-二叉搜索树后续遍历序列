@@ -1,0 +1,59 @@
+class Solution {
+public:
+    bool VerifySquenceOfBST(vector<int> sequence) {
+        if(sequence.size() == 0)
+            return false;
+        int begin = 0;
+        int end = sequence.size()-1;
+        return func(sequence,begin,end);
+
+    }
+    bool func(vector<int> & sequence,int begin,int end)
+    {
+        if(begin >= end) return true;
+        int root = sequence[end];
+        int i = begin;
+        for(;i< end;i++)
+        {
+            if(sequence[i]> root)
+            {
+
+                break;
+            }
+        }
+
+        for(int j = i;j<end;j++)
+        {
+            if(sequence[j] < root)
+                return false;
+        }
+        bool left = true;
+
+        if(i > begin)
+            left = func(sequence,begin,i-1);
+        bool right = true;
+        if(i < end-1)
+            right = func(sequence,i,end-1);
+        return left && right;
+    }
+};
+
+这个题目，我一共犯了两点错误
+第一： 我知道 判断后续遍历的规则。 从数组中找到第一个大于root的节点，root节点前面是小于root
+的值，是root的 左孩子，剩下的就是root的右孩子。其中如果右孩子中有数小于root的节点就会返回
+false。 对于这个规则我迷乱在边界的规则设计上，开始我先设置如果第一个大于root的节点是0的情况
+，root为最后一个节点的情况。 其实正确的方式就是讨论index跟begin指针和end指针的大小关系。
+第二： 我犯的第二个错误
+int index = begin;
+        for(;i< end;i++)
+        {
+            if(sequence[i]> root)
+            {
+                index = i;
+                break;
+            }
+        }
+这是一个非常典型的错误，就是说index的值只有在满足sequence[i] > root的情况才会被赋值
+其他情况会一直等于begin，然而我们这里的 i值其实是一个扫描的功能，通过最终的位置反馈来反应
+数组的情况，以方便后面程序的处理，比如没有找到 大于root的值，那应该要扫描到数组的末尾-1。
+然而我这样的处理，会丢失扫描的意义，然而我后面还把他作为扫描功能来用！！！太错了。
