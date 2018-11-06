@@ -1,0 +1,62 @@
+/*
+struct ListNode {
+    int val;
+    struct ListNode *next;
+    ListNode(int x) :
+            val(x), next(NULL) {
+    }
+};*/
+class Solution {
+public:
+    ListNode* ReverseList(ListNode* pHead) {
+        if(pHead == nullptr || pHead->next == nullptr) return pHead;
+        ListNode* pPre = pHead;
+        ListNode* pMiddle = pPre->next;
+        pPre->next = nullptr;
+        if(pMiddle->next == nullptr) return pMiddle;
+        ListNode* pRear = pMiddle->next;
+        while(pRear){
+            pMiddle->next = pPre;
+            pPre = pMiddle;
+            pMiddle = pRear;
+            pRear = pRear->next;
+        }
+
+        pMiddle->next = pPre;
+
+        return pMiddle;
+
+    }
+};
+以上是我最开始提交的代码，用的是三个指针。 最后再循环的时候比较尴尬，后面还要多加一次
+pMiddle->next = pRre. 因为我们的循环条件是pPrear,他不为空，前面指针的赋值才会进行。
+所以我对代码改进了一下
+
+
+class Solution {
+public:
+    ListNode* ReverseList(ListNode* pHead) {
+        if(pHead == nullptr)
+            return nullptr;
+        ListNode* p = pHead;
+        ListNode* q = p->next;
+        p->next = nullptr;
+
+
+        while(q)
+        {
+            auto temp = q->next;
+            q->next = p;
+            p = q;
+            q = temp;
+        }
+        return p;
+    }
+};
+
+用两个指针就可以解决问题，而且少了用三个指针的时候对pMiddle为空的讨论。
+
+
+
+
+
