@@ -1,0 +1,66 @@
+class Solution {
+public:
+    vector<vector<int> > FindContinuousSequence(int sum) {
+        vector<vector<int>> result;
+        if(sum == 1)
+            return result;
+
+        int end_ix = (sum>>1) + 1;
+        int small = 1;
+        int big = 2;
+        int s_num =3;
+        for(;big <= end_ix;)
+        {
+            if(s_num == sum)
+            {
+                vector<int> tmp;
+                for(int i=small;i<=big;i++)
+                    tmp.push_back(i);
+                result.push_back(tmp);
+                big++;
+                s_num += big;
+            }
+            else if(s_num < sum)
+            {
+                big++;
+                s_num += big;
+            }
+            else if(s_num > sum && small < big -1)
+            {
+                s_num -= small;
+                small++;
+            }
+            else if(small == big -1)
+                return result;
+        }
+        return result;
+    }
+};
+
+这个题目 最终是看了答案才想出来的。
+我刚开始的思路是，两头指针相向移动，去逼进目标值。但是问题是找到目标值之后再怎么移动呢？我就陷入困境了。
+两头逼进这个思路在很多求解最优问题上非常有效的。但是这个问题不是就最优解，而是求所有可能的解。两头指针，无论是动哪个都能让值最小，那我们应该动哪
+呢？ 在面临这种选择问题，我们可以用递归的方法。那个这个问题如果用递归的方法的，时间复杂度是n的平方了。
+对于这种多选择问题，我们应该更改策略，避免选择问题。big small 指针方法就完美解决了这个问题。两个指针都向后运动，但是功能却不同。small指针移动
+可以让值变小，big指针移动可以让值变大。这样就没有了选择问题。
+
+类似这种选择问题，在别的题中经常出现。比如 拿5张牌，判断是不是顺子。其中王可以作为任意的牌。那我们就会想，把王插入到空缺的位置。
+这个时候我们就面临一个选择的问题。
+1,2,3,4   王只能插在4后面
+10,J,Q,K  王只能插在10前面
+那我们王应该插在数字前面还是后面呢？ 还是针对上述情况特殊讨论？ 如果特殊讨论也是可以，只是增加了代码复杂性。
+所以我们可以考虑 避免选择法，统一地插在后面，规定K后面也可以插入。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
