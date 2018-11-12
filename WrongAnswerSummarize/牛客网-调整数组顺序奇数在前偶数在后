@@ -1,0 +1,81 @@
+这个题目跟书上不一样的地方，要求奇数偶数相对位置不便。这样就不能用两头指针相互靠近，调换位置的思想。
+所以我试着两个指针都在数组前面，向同一个方向移动的策略。
+代码如下：
+class Solution {
+public:
+    void reOrderArray(vector<int> &array) {
+        if(array.size()==0||array.size()==1) return;
+        int ix_fast =1,ix_slow=0;
+        while(ix_slow<ix_fast && ix_fast<array.size())
+        {
+            while(array[ix_slow]%2 ==1)
+            {
+                ix_slow++;
+                ix_fast++;
+            }
+            while(ix_fast<array.size()&&array[ix_fast]%2==0) ix_fast++;
+            if(ix_fast==array.size()) return;
+            int tmp = array[ix_slow];
+            array[ix_slow] = array[ix_fast];
+            array[ix_fast] = tmp;
+        }
+    }
+};
+这个程序是答案错误，这个程序能够按顺序让奇数正确排序，但是偶数就不能保持相对位置。
+这个程序的思想： 如果碰到偶数，就按顺序把奇数换到这个位置。偶数换到奇数的位置。错误的地方是，只在意奇数的正确顺序，偶数就不满足相对位置不变这个
+约束条件。  基于此，我们即想让奇数正确排序的前提下，让偶数也正确排序，所以在处理偶数的时候不是把偶数交换出去，而是把偶数按顺序存在一个数组中。
+这样就多了空间复杂度O(n),代码如下：
+class Solution {
+public:
+    void reOrderArray(vector<int> &array) {
+        vector<int> data;
+        int p=0;
+        for(;p<array.size()&&array[p]%2==1;p++);
+        int q = p;
+        for(;q<array.size()&&array[q]%2==0;q++);
+        while(p<array.size()||q<array.size())
+        {
+            if(array[p]!=0)
+                data.push_back(array[p]);
+            array[p] = array[q];
+            array[q] = 0;
+            p++;
+            q++;
+            for(;q<array.size()&&array[q]%2==0;q++);
+            for(;p<array.size()&&array[p]%2==1;p++);
+        }
+        int begin = array.size() - data.size();
+        for(int i=0;i<data.size();i++)
+            array[begin++] = data[i];
+    }
+};
+这个代码很多细节都有值得借鉴的地方。
+首先看看 ：while(p<array.size()||q<array.size()) 不同于之前的代码，这部分用了逻辑表达式||。 这部分应该仔细思考，培养基本的编程直觉。
+后者用||是因为 我们的快指针到达数组尾部还不算结束，我们还要把剩余的偶数存进数组中。
+第二点，我们看看
+        int p=0;
+        for(;p<array.size()&&array[p]%2==1;p++);
+        int q = p;
+        for(;q<array.size()&&array[q]%2==0;q++);
+我们首先要让指针分别指向第一个偶数和奇数，这里分开操作的。这种初始化方式看着比较繁琐，我也尝试过他们各自初始化为0.然后在循环体中进行值迭代。
+        int ix_j=0,ix_o=0;
+        vector<int> data;
+        while(ix_j<array.size()&&ix_o<array.size())
+        {
+            while(array[ix_j]%2 ==1) ix_j++;
+            if(array[ix_j]!=0)
+                data.push_back(array[ix_j]);
+            ix_o = ix_j;
+            while(ix_o<array.size()&&array[ix_o]%2 ==0) ix_o++;
+            array[ix_j] = array[ix_o];
+            array[ix_o] = 0;
+        }
+这显然不是很好的方法，这样就会每次都让快指针回退，降低效率。综合来看，让他们各自分开初始化是最好的。
+第三点：
+往数组里面传值，都是统一在循环体内进行的。 简化了代码。这里总结的经验是如果初始化和循环是同一个策略的，那就都放循环体，省去了讨论的麻烦。
+比如这个代码，如果初始化数组存放放在循环体外的话。我们还得讨论q指针是不是到了数组的尾部。要加if语句，不如都统一在while循环里完成。while里面
+有条件判断的阿。
+第四点：
+有一点编程习惯应该养成，检查值的更新条件。我们要保证每次指针都向前递增1。
+我刚开始的策略是值调换完成后，指针不更新，而是交给for循环去更新。但是要知道调换完成后就没有在传递到下一次迭代的必要了。而仍然把这个值传递到下一
+迭代，就是 原地保留的 更新方法，有进入死循环的风险。 在这个例子里就是一种表现，如果两个for 判断失效那么 这个循环就会一直进行下去。
