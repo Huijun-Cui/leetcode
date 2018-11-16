@@ -1,0 +1,25 @@
+这个题我本来是想到了用递归，但是我以前理解递归是由上到下的分析方式，在这个题目上没有分析出来。
+看了答案，看了半天才明白。 我觉得但凡涉及选择的 都应该首先想到递归。
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> result;
+        string s = "";
+        func(result,s,n,0);
+        return result;
+    }
+    void func(vector<string>& result,string s,int n,int m)
+    {
+        if(n==0&&m==0)
+        {
+          result.push_back(s);
+          return;
+        }
+
+        if(m>0)
+            func(result,s+")",n,m-1);
+        if(n>0)
+            func(result,s + "(",n-1,m+1);
+
+    }
+};
