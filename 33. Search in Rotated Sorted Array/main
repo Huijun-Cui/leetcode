@@ -1,0 +1,51 @@
+这个题 我想了很久发现了规律。我发现target比首数大，他只能在左边，如果比尾数小只能右边。我们每次
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        if(nums.size()==0) return -1;
+        int pre =0,rear = nums.size()-1;
+        while(pre!=rear)
+        {
+            int mid = (pre+rear)>>1;
+            if(target == nums[mid]) return mid;
+            if(target == nums[pre]) return pre;
+            if(target == nums[rear]) return rear;
+            if(target>nums[pre])
+            {
+                if(target<nums[mid]) rear = --mid;
+                else ++pre;
+            }
+            else ++pre;
+        }
+        if(nums[pre] == target) return pre;
+        else return -1;
+    }
+};
+这个代码是AC了，但是其实还是没有完全发现规律。基于此应该进一步发现规律。
+1.任何一个值通过跟首尾数字相比较都可以确定他数以哪个部分的点。
+2.我们应该确定往哪个方向缩进要考虑两点一是大小关系，二是是否落在同一个 左右区间。
+
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        if(nums.size() ==0) return -1;
+        int pre =0,rear = nums.size()-1;
+        while(pre!=rear)
+        {
+            int mid = (pre+rear)>>1;
+            if(nums[mid] == target) return mid;
+            if(target>=nums[pre])
+            {
+                if(nums[mid]<nums[pre]||target<nums[mid]) rear = --mid;
+                else pre = ++mid;
+            }
+            else
+            {
+                if(nums[mid]>=nums[pre]||target>nums[mid]) pre = ++mid;
+                else rear = --mid;
+            }
+        }
+        if(nums[pre]==target) return pre;
+        else return -1;
+    }
+};
