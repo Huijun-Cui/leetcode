@@ -1,0 +1,19 @@
+class Solution {
+public:
+    TreeNode* reConstructBinaryTree(vector<int> pre,vector<int> vin) {
+        return func(pre,vin,0,pre.size()-1,0,vin.size()-1);
+    }
+    TreeNode* func(vector<int>pre,vector<int> vin,int pBegin,int pEnd,int vBegin,int vEnd)
+    {
+        TreeNode* root = new TreeNode(pre[pBegin]);
+        if(pBegin > pEnd) return nullptr;
+        if(pBegin == pEnd) return root;
+        int ix = vBegin;
+        for(;vin[ix]!=pre[pBegin];ix++);
+        root->left = func(pre,vin,pBegin+1,ix+pBegin-vBegin,vBegin,ix-1);
+        root->right = func(pre,vin,ix+pBegin-vBegin+1,pEnd,ix+1,vEnd);
+        return root;
+    }
+};
+
+第二次忘记加 if(pBegin > pEnd) return nullptr; 这个是我们在vin遍历，找到的节点也是vin头结点的情况。
