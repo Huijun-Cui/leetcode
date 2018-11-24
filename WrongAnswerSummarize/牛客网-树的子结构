@@ -26,3 +26,5 @@ public:
         return HasSubtreeFunc(pRoot1->left,pRoot2->left) &&HasSubtreeFunc(pRoot1->right,pRoot2->right);
     }
 };
+这题我知道是先搜索 在判断是不是二叉树，但是当时还是乱。当时想怎么递归遍历判断然后在遍历中插入另一个递归，当时理不清。
+这种递归题想理清思路，我建议还是由上到下去分析。然后由下到上的思路去实现。
