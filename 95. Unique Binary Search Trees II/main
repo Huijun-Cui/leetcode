@@ -1,0 +1,44 @@
+class Solution {
+public:
+    vector<TreeNode*> generateTrees(int n) {
+        vector<TreeNode*> result;
+        if(n==0) return result;
+        TreeNode* root = nullptr;
+        func(result,root,0,n);
+        return result;
+    }
+    TreeNode* clone_func(TreeNode* root)
+    {
+        if(root == nullptr) return nullptr;
+        TreeNode* tmp = new TreeNode(root->val);
+        tmp->left = clone_func(root->left);
+        tmp->right = clone_func(root->right);
+        return tmp;
+    }
+    void func(vector<TreeNode*>&result,TreeNode* root,int count,int target)
+    {
+        if(count == target)
+        {
+            result.push_back(root);
+            return;
+        }
+        TreeNode* node = new TreeNode(count+1);
+        node->left = root;
+        TreeNode* node_clone = clone_func(node);
+        func(result,node_clone,count+1,target);
+        TreeNode* p = root;
+        while(p)
+        {
+            TreeNode* tmp;
+            tmp = p->right;
+            p->right = node;
+            node->left = tmp;
+            TreeNode* root_clone = clone_func(root);
+            func(result,root_clone,count+1,target);
+            p->right = tmp;
+            p = p->right;
+        }
+    }
+};
+
+这个题目刚拿到手 第一是没有思路，看了discussion之后才知道怎么做。第二就是不确定要不要做一个拷贝树结构的操作，这一块犹豫了很久。
