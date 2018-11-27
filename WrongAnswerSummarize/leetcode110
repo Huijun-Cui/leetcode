@@ -18,3 +18,25 @@ bool InsBalanced(BinaryTreeNode* pRoot)
 这种方法的弊端是 节点重复遍历
 
 所以剑指offer里面给的第二种解法是：后序遍历
+
+而我自己的方法是flag方法，我的思路是递归遍历树，一旦在哪个节点发现不是平衡树，就flag置为1。
+
+
+
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        bool flag = true;
+        func(root,flag);
+        return flag;
+    }
+    int func(TreeNode* root,bool& flag)
+    {
+        if(root == nullptr) return 0;
+        int left = func(root->left,flag);
+        int right = func(root->right,flag);
+        if(left-right>1||left-right<-1) flag = false;
+        return left>right?left+1:right+1;
+
+    }
+};
