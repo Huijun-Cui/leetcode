@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int sum) {
+        return func(root,sum,0);
+    }
+    bool func(TreeNode* root,int sum,int cnum)
+    {
+        if(root == nullptr) return false;
+        cnum+=root->val;
+        if(cnum == sum && !root->left && !root->right) return true;
+        return func(root->left,sum,cnum) || func(root->right,sum,cnum);
+    }
+};
+
+刚开始做这个题的时候，由于之前做了111题，我在这里也做了 if(!root->left) if(!root->right)的讨论，后来发现其实就是进入到null结点也没关系
+不像111题，会返回零从而影响最终结果。
