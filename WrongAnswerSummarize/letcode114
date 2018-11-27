@@ -1,0 +1,20 @@
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        TreeNode* last = nullptr;
+        func(root,last);
+    }
+    void func(TreeNode* root,TreeNode*& last)
+    {
+        if(!root) return;
+        TreeNode* tmp_r = root->right;
+        TreeNode* tmp_l = root->left;
+        if(last) last->right = root;
+        root->left = nullptr;
+        last = root;
+        func(tmp_l,last);
+        func(tmp_r,last);
+        return;
+
+    }
+};
