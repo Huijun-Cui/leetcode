@@ -1,0 +1,20 @@
+判断一颗树是不是平衡树。这个题目思路有很多种。
+剑指offer给的第一种方法 用的是中序遍历 求左右树高度差
+
+bool InsBalanced(BinaryTreeNode* pRoot)
+{
+    if(pRoot == nullptr):
+        return true;
+
+    int left = TreeDepth(pRoot->m_pLeft);
+    int right = TreeDepth(pRoot->m_pRight);
+    int diff = left - right;
+    if(diff>1||diff<-1)
+        return false;
+
+    return IsBalance(pRoot->m_pLeft)&&IsBalance(pRoot->m_pRight);
+}
+
+这种方法的弊端是 节点重复遍历
+
+所以剑指offer里面给的第二种解法是：后序遍历
