@@ -1,0 +1,33 @@
+这个程序很简单，但是写的时候总觉得不够简练，以下是我的代码
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        if(root ==nullptr) return 0;
+        if(root->left==nullptr&&root->right==nullptr)
+            return 1;
+        int left = INT_MAX;
+        int right = INT_MAX;
+        if(root->left)
+            left = minDepth(root->left);
+        if(root->right)
+            right = minDepth(root->right);
+        return left<right?left+1:right+1;
+};
+};
+
+我在写的时候碰到的麻烦就是null节点他会返回0深度的值。而树的深度是从根节点到叶子节点的，显然不可以把这种情况算进去。所以我在程序中设定只有在叶子
+节点的时候返回 1.然后把left right值设定一个非常大的值。如果没被更新，跟任何值比都不会选到他们。
+再看看人家写的代码
+
+class Solution {
+public:
+    int minDepth(TreeNode *root) {
+        if(!root) return 0;
+        if(!root->left) return 1 + minDepth(root->right);
+        if(!root->right) return 1 + minDepth(root->left);
+        return 1+min(minDepth(root->left),minDepth(root->right));
+    }
+};
+
+
+唉 差距阿 ！
