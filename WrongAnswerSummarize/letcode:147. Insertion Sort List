@@ -1,0 +1,33 @@
+这个题目思路开始没理清，理清思路之后面代码逻辑理不清楚 这个是经典的节点插入问题
+应该引起足够的重视
+
+class Solution {
+public:
+    ListNode* insertionSortList(ListNode* head) {
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+        ListNode* pre = dummy;
+        ListNode* cur = head;
+        while(cur)
+        {
+            if(cur->next&&cur->next->val < cur->val)
+            {
+                while(pre->next&&pre->next->val < cur->next->val) pre = pre->next;
+                ListNode* tmp = pre->next;
+                pre->next = cur->next;
+                cur->next = cur->next->next;
+                pre->next->next = tmp;
+                pre = dummy;
+
+
+
+            }
+
+            else
+                cur = cur->next;
+        }
+        return dummy->next;
+
+    }
+
+};
