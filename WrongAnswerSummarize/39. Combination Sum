@@ -1,0 +1,60 @@
+这个题 我自己是写出来了，这种有限状态自动机的问题比较典型，所以放在一起总结了一下
+
+首先看看网上些的代码
+class Solution {
+public:
+    std::vector<std::vector<int> > combinationSum(std::vector<int> &candidates, int target) {
+        std::sort(candidates.begin(), candidates.end());
+        std::vector<std::vector<int> > res;
+        std::vector<int> combination;
+        combinationSum(candidates, target, res, combination, 0);
+        return res;
+    }
+private:
+    void combinationSum(std::vector<int> &candidates, int target, std::vector<std::vector<int> > &res,\
+     std::vector<int> &combination, int begin) {
+        if (!target) {
+            res.push_back(combination);
+            return;
+        }
+        for (int i = begin; i != candidates.size() && target >= candidates[i]; ++i) {
+            combination.push_back(candidates[i]);
+            combinationSum(candidates, target - candidates[i], res, combination, i);
+            combination.pop_back();
+        }
+    }
+};
+
+这个代码比我的代码跑的快，而且我刚开始没有明白他在程序最开始进行排序的原因。正是这个地方使得这个程序能够速度更快的原因。我们的target程序是在
+之前累计和的结果下，接下来要匹配的结果。如果target比这个数组中某个数小了，那他后面的数都不用再比了，因为一定小于后面的数（因为数据已经排序好了）
+而我的程序是纯粹的有限状态自动机 如下
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> result;
+        vector<int> tmp;
+        int sum = 0;
+        int ix = 0;
+        func(result,tmp,sum,target,ix,candidates);
+        return result;
+    }
+    void func(vector<vector<int>>& result,vector<int>tmp,int sum,int target,int ix,vector<int> candi)
+    {
+        if(sum == target)
+        {
+            result.push_back(tmp);
+            return;
+        }
+        if(sum > target) return;
+        tmp.push_back(candi[ix]);
+        func(result,tmp,sum+candi[ix],target,ix,candi);
+        tmp.pop_back();
+        if(ix+1<candi.size())
+        {
+            func(result,tmp,sum,target,ix+1,candi);
+        }
+
+    }
+};
+
+我的程序通用性会比较好，因为有些任务元素是没有大小关系，求的内容也不是数据的和，这种情况下基于sort的程序就使用不了了。而且我的代码逻辑更清晰。
