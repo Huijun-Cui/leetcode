@@ -1,0 +1,31 @@
+ 这个题目，刚开始的时候，我一直不知道对每个数字怎么去设置最大循环数这种概念。比如1 只出现两次，那怎么做到只循环两次
+
+class Solution {
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(),candidates.end());
+        vector<vector<int>> result;
+        vector<int> combine;
+        func(result,combine,target,0,candidates);
+        return result;
+    }
+    void func(vector<vector<int>>&result,vector<int>combine,int target,int begin,vector<int>& candidates)
+    {
+        if(!target)
+        {
+            result.push_back(combine);
+            return;
+        }
+
+        for(int i=begin;i!=candidates.size()&&target>=candidates[i];i++)
+        {
+            if(i == begin || candidates[i]!=candidates[i-1])
+            {
+                combine.push_back(candidates[i]);
+                func(result,combine,target-candidates[i],i+1,candidates);
+                combine.pop_back();
+            }
+        }
+
+    }
+};
