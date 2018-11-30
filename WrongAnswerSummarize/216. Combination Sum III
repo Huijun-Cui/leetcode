@@ -1,0 +1,24 @@
+这个程序是我自己写出来的 美滋滋
+class Solution {
+public:
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int>> result;
+        vector<int> combine;
+        func(result,combine,k,1,n);
+        return result;
+    }
+    void func(vector<vector<int>>& result,vector<int>combine,int k,int begin,int target)
+    {
+        if(!target&&combine.size()==k)
+        {
+            result.push_back(combine);
+            return;
+        }
+        for(int i=begin;i!=10&&target>=i;i++)
+        {
+            combine.push_back(i);
+            func(result,combine,k,i+1,target-i);
+            combine.pop_back();
+        }
+    }
+};
