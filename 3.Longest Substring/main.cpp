@@ -71,3 +71,67 @@ public:
     }
 };
 
+# 网上的方法，真的好简洁 Python 60 ms, 93.45%
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+            
+        d = {}
+        
+        max_len = 0
+        cur_len = 0
+        
+        for i,c in enumerate(s):
+            cur_len += 1
+                
+            if c in d:
+                
+                last_c_ind = d[c]
+                t_len = i - last_c_ind
+                
+                if cur_len-1 >= t_len:
+                    cur_len = t_len
+            
+            d[c] = i
+            
+            if cur_len > max_len:
+                max_len = cur_len
+                
+            
+        return max_len
+
+
+# 我的python 方法 60ms
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        root_ix = -1
+        cur_len = 0
+        max_len = 0
+        s2ix = {}
+        for ix,item in enumerate(s):
+            if item not in s2ix: 
+                cur_len +=1
+                if cur_len > max_len:
+                    max_len = cur_len
+                s2ix[item] = ix
+            else:
+                tmp_ix = s2ix[item] +1
+                if tmp_ix > root_ix:
+                    root_ix = tmp_ix
+                    cur_len = ix - s2ix[item]
+                else:
+                    cur_len +=1
+                if cur_len > max_len:
+                        max_len = cur_len
+                s2ix[item] = ix
+        if cur_len > max_len:
+            max_len = cur_len
+            
+        return max_len
+                
+
+
+
+
+
