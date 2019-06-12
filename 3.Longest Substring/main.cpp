@@ -130,8 +130,25 @@ class Solution:
             
         return max_len
                 
+# 借鉴网上这个代码我自己又重新写了一个
 
-
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        max_len = 0
+        cur_len = 0
+        s2ix = {}
+        
+        for ix,item in enumerate(s):
+            cur_len +=1
+            if item in s2ix:
+                tmp_len = ix - s2ix[item]
+                if tmp_len <= cur_len-1:
+                    cur_len = tmp_len
+            s2ix[item] = ix
+            if cur_len > max_len:
+                max_len = cur_len
+        return max_len
+                
 
 
 
