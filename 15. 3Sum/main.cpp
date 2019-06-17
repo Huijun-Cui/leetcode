@@ -51,3 +51,29 @@ public:
 
 }
 };
+
+
+# 我第二次做的时候，一直不能解决 tripe 是 unordered unique的问题，后来看了答案，原来是用排序的思想解决了
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        ix_store = []
+        result = []
+        tup_dic = {}
+        
+        i,j = 0,0
+        
+        while i < len(nums):
+            j = i+1
+            while j < len(nums):
+                if -(nums[i] + nums[j]) not in tup_dic:
+                    tup_dic[-(nums[i] + nums[j])] = []
+                tup_dic[-(nums[i]+nums[j])].append((i,j))
+                j+=1
+            i +=1
+        for ix,item in enumerate(nums):
+            if item in tup_dic:
+                for _item in tup_dic[item]:
+                    if _item[1] < ix:
+                        result.append(list(_item) + [ix])
+        return result
+                    
