@@ -42,9 +42,36 @@ class Solution:
 二是怕写的时候细节处理不好，这个题目 应该好好总结一番，待续。。。。。
 
 
+在 solution中看到一个 代码非常精简的代码 
 
+```
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        start = 0
+        end = len(nums) - 1
+        
+        while start <= end:
+            
+            mid = (start + end) // 2
+            
+            if nums[mid] == target:
+                return mid
+            
+            if nums[mid] <= nums[end]: 
+                if nums[mid] < target and nums[end] >= target:
+                    start = mid + 1
+                else:
+                    end = mid - 1
+            elif nums[start] <= nums[mid]:
+                if target >= nums[start] and target < nums[mid]:
+                    end = mid - 1
+                else:
+                    start = mid + 1
+            
+        return -1
+```
 
-
+这个代码逻辑非常清晰，
 
 
 
