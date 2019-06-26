@@ -25,3 +25,24 @@ class Solution:
 ```
 1.pre_ix 初始值设定 -1 这个是偶然发现的，其实逻辑上设置-1 没什么意义，在这个题上感觉是个凑巧
 2. 最初的代码会有bug ,比如在[10,2,1,2,7,6,1,5] 这个代码里，会出现两次 1 2 5 这种输出，我后来想到这个代码既然是广度优先遍历，我在同一个层中 不要让它们跟前一个节点相同就可以解决这个问题 
+
+在 discussion里看到 他们对prefix的处理上，跟我不一样，我也觉得这样写更加make sence
+
+```
+def combinationSum2(self, candidates, target):
+    res = []
+    candidates.sort()
+    self.dfs(candidates, target, 0, [], res)
+    return res
+    
+def dfs(self, candidates, target, index, path, res):
+    if target < 0:
+        return  # backtracking
+    if target == 0:
+        res.append(path)
+        return  # backtracking 
+    for i in xrange(index, len(candidates)):
+        if i > index and candidates[i] == candidates[i-1]:
+            continue
+        self.dfs(candidates, target-candidates[i], i+1, path+[candidates[i]], res)
+```
