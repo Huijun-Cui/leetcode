@@ -75,3 +75,95 @@ class Solution(object):
 
 这个代码跟我的代码思路是一样的啊，也是用函数递归，但是为什么他的就不超时？  研究一下  不管了，这个代码再请教一下别人把。。。。
 
+仔细对比了，我和他的代码，发现有不一样的地方，我用了path, 他没有用，确实可以不用path,我再想难道是因为path的原因，
+造成我的程序超时吗？ 是因为path太大，程序内存开销大，导致程序跑的慢？ 好像不是啊，电脑并没有卡顿的现象，我验证一下
+
+我把代码改成下面的形式仍然超时，
+```
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        
+        
+        def func(i,j,_str):
+            if len(_str) == 0:
+                return True
+            
+            if board[i][j] != _str[0]:
+                return False
+            if board[i][j] == _str[0] and len(_str) == 1:
+                return True
+            
+            tmp = board[i][j]
+            board[i][j] = "#"
+            left = False
+            right = False
+            up = False
+            down = False
+            
+            if j>0 and board[i][j-1] != "#":
+                left = func(i,j-1,_str[1:])
+            
+            if j < len(board[0])-1 and board[i][j+1] != "#":
+                right = func(i,j+1,_str[1:])
+            
+            if i >0 and board[i-1][j] != "#":
+                up = func(i-1,j,_str[1:])
+                
+            if i < len(board)-1 and board[i+1][j] !="#":
+                down = func(i+1,j,_str[1:])
+            
+            board[i][j] = tmp
+            
+            return left or right or up or down
+        
+        for i,row in enumerate(board):
+            for j,col in enumerate(row):
+                if func(i,j,word):
+                    return True
+        return False
+```
+
+显然不是什么path问题，那是什么问题呢？ 我把代码在进一步修改成如下，已经非常趋近于网上的代码了，还是超时
+```
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        
+        
+        def func(i,j,_str):
+            if len(_str) == 0:
+                return True
+            
+            if i<0 or i>=len(board) or j < 0 or j>=len(board[0]) or board[i][j] != _str[0]:
+                return False
+            
+            if board[i][j] == _str[0] and len(_str) == 1:
+                return True
+            
+            tmp = board[i][j]
+            board[i][j] = "#"
+            left = False
+            right = False
+            up = False
+            down = False
+            
+            left = func(i,j-1,_str[1:])
+            
+            
+            right = func(i,j+1,_str[1:])
+            
+           
+            up = func(i-1,j,_str[1:])
+                
+            
+            down = func(i+1,j,_str[1:])
+            
+            board[i][j] = tmp
+            
+            return left or right or up or down
+        
+        for i,row in enumerate(board):
+            for j,col in enumerate(row):
+                if func(i,j,word):
+                    return True
+        return False
+```
