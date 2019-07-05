@@ -1,16 +1,18 @@
-这个题，我也做过，我说的我做过是指以前怎么做的那种印象还留在脑海里，我尽量不去回想，而是自己找思路
+这个题也是做过，唉。。。。
 
-两次提交ac  beat 96.20%
+这个题仍然是像102题那样遍历，只不过 正反交替读入就可以了
+
+代码一次ac 就是只beat了 20.34% 难道还有更快的解法吗？ 去看一下discussion
 ```
 class Solution:
-    def levelOrder(self, root: TreeNode) -> List[List[int]]:
-        
+    def zigzagLevelOrder(self, root: TreeNode) -> List[List[int]]:
         if not root:
             return []
         cur_list = []
         next_list = []
         ret = []
         
+        right_direc = 1
         cur_list.append(root)
         
         
@@ -25,8 +27,11 @@ class Solution:
                     next_list.append(cur_list[i].right)
 
                 i +=1
-                
-            ret.append(tmp_nums)
+            if right_direc:
+                ret.append(tmp_nums)
+            else:
+                ret.append(tmp_nums[::-1])
+            right_direc = right_direc ^ 1
             if len(next_list) == 0:
                 break
             cur_list = next_list
@@ -34,4 +39,5 @@ class Solution:
             
         return ret
 ```
-比较简单，就不多说了
+
+这种题，感觉不用纠结了 ，都是这么做的
