@@ -23,7 +23,9 @@
 
 这道题用Floyd算法写一下试试，下面是我的算法,超时间了。。。 
 
-样例通过 21/40
+样例通过 21/40, 
+
+没有通过的case  wordList 长度是599 
 
 ```
 class Solution:
@@ -71,3 +73,78 @@ class Solution:
 
 如果Floyd算法超时那就没必要试试 Dijkstra 了，他们的时间复杂度都是一样的
 
+这个题我实在想不出来用O(N)或者O(N**2)的时间复杂度做出来，这个也是到目前做leetcode，第一次遇到想不出思路来的时候
+
+这个题我最后是看了答案得。。。。
+
+答案用得是BFS算法，光BFS部分时间复杂度是O(n)，之前我没有想过BFS的时间复杂度这么低，如果之前意识到这点，我肯定会借着BFS去思考。。。。  所以各个算法的时间复杂度是多少应该有个清晰的概念，养成良好的习惯。
+
+既然BFS的时间复杂度是O(n)，那我们应该建立一个结点之间连接的信息。我当时的想法就觉得这部分时间复杂度特别高，我们算最坏时间复杂度，每个结点都只跟一个结点相连接，连到最后一个结点，那么时间复杂度是
+
+O(n* m + (n-1)*m  ..... + m) = O(n**2 * m)
+
+这个时间复杂度也不低吧，假如 m == n 那这个时间复杂度也是O(n**3)了
+所以这个题除非m的长度比较小，不然时间复杂度真的跟 Floyd算法是差不多的。。。
+
+在这个问题这个题有一个非常巧妙的trick ，也正是这个trick 能让时间复杂度降低到O(n)的级别，如下：
+
++ Dug => \*ug
++ Dug => D\*g
++ Dug => Du*
+
+这样的话我们借助hash map，把每个字符映射到 去词汇话（我自己起的名字）的空间中去，如下面的代码
+
+```
+all_combo_dict = defaultdict(list)
+for word in wordList:
+            for i in range(L):
+                # Key is the generic word
+                # Value is a list of words which have the same intermediate generic word.
+                all_combo_dict[word[:i] + "*" + word[i+1:]].append(word)
+```
+
+这个步骤的时间复杂度是O(n*m)
+
+这样整个时间复杂度是就是 O(n) + O (n*m)
+
+非常巧妙的问题解法
+
+下面是我的代码,没有AC , 这个感觉是leetcode 平台的bug ,我自己的机器，以及leetcode Testcase编译器都能顺利通过，但是一提交就出错，这。。。。怎么搞。。。
+
+```
+from collections import defaultdict
+from collections import deque
+de_que = deque()
+class Solution:
+    def ladderLength(self, beginWord, endWord, wordList):
+        
+        
+        lexical_dict = defaultdict(list)
+        
+        for item in [beginWord] + wordList:
+            
+            for i in range(len(beginWord)):
+                lexical_dict[item[:i] + "*" + item[i+1:]].append(item)
+        
+        
+        visited_dict = defaultdict(int)
+        
+        
+        de_que.append((beginWord,1))
+        visited_dict[beginWord] = 1
+        
+        
+        while len(de_que):
+            word,level = de_que.popleft()
+            
+            for i in range(len(word)):
+                for item in lexical_dict[word[:i] + "*"+word[i+1:]]:
+                    
+                    if item == endWord:
+                        return level + 1
+                    
+                    if item != word and not visited_dict[item]:
+                        de_que.append((item,level+1))
+                        visited_dict[item] = 1
+        return 0
+```
