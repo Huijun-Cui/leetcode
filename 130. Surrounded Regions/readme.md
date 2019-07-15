@@ -145,3 +145,24 @@ class Solution(object):
 ```
 
 别人的代码慢慢再看吧 今天累了
+
+看到一个这个代码，代码速度比我的慢，但是我们的时间复杂度是一样的
+
+```
+def solve(self, board):
+    if not any(board): return
+
+    m, n = len(board), len(board[0])
+    save = [ij for k in range(m+n) for ij in ((0, k), (m-1, k), (k, 0), (k, n-1))]
+    while save:
+        i, j = save.pop()
+        if 0 <= i < m and 0 <= j < n and board[i][j] == 'O':
+            board[i][j] = 'S'
+            save += (i, j-1), (i, j+1), (i-1, j), (i+1, j)
+
+    board[:] = [['XO'[c == 'S'] for c in row] for row in board]
+```
+
+这个代码 save = [ij for k in range(m+n) for ij in ((0, k), (m-1, k), (k, 0), (k, n-1))] 不容易懂，写的不好，下面也有人提出 为什么不把range(m+n) 改为 max(m,n) 
+
+还有这个代码 'XO'[c=='S'] 写的很骚，作者是深得pytyhon代码得精髓啊，，，， 这个代码思路是跟我想得一一样得，我是用了函数递归，他是用了一个堆。 我得函数比多用了一个visited 矩阵，其实这个是不需要得因为board里面元素改成了“R”就已经说明访问过了。
