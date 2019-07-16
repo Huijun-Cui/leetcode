@@ -20,5 +20,64 @@ class Solution:
 ```
 
 
-这个问题我想不出来了,看答案吧，明天再看，好困。。。add
+这个问题我想不出来了,看答案吧，明天再看，好困。。。add  
 
+看了答案之后，我知道了这个就是按位置相加，然后对3取模，然后再把二进制数变成整数输出出来，但是我在实际写的时候遇到了如下的问题
+```
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        
+        num_store = [0] * 32
+        
+        for i in range(32):
+            for item in nums:
+                tmp = (item>>i) & 1
+                num_store[i] += tmp
+        
+        i = 0
+        
+        ret_num = 0
+        while i<len(nums)-1:
+            num_store[i] = num_store[i] % 3
+            ret_num += (2 ** i) *  num_store[i]
+            i+=1
+        if nums[-1] == 1:
+            return -ret_num
+        return ret_num
+
+
+Your input
+[-2,-2,1,1,-3,1,-3,-3,-4,-2]
+Output
+508
+Expected
+-4
+```
+
+原因是负数在内存中是以补码的形式存在的，我们最后还要加上补码转换到整数的过程。按位置取反然后再加1，感觉时间复杂度就高了啊。 
+
+我还要再次看看 discussion里面是怎么做的
+
+```
+class Solution:
+# @param A, a list of integer
+# @return an integer
+def singleNumber(self, A):
+    ans = 0
+    for i in xrange(0,32):
+        count = 0
+        for a in A:
+            if ((a >> i) & 1):
+                count+=1
+        ans |= ((count%3) << i)
+    return self.convert(ans)
+    
+def convert(self,x):
+    if x >= 2**31:
+        x -= 2**32
+    return x
+
+```
+这个函数里面有一个地方就是补码到原码的转换，就是 convert(x)
+
+这个变换我看得不是很明白，我觉得我需要把补码，原码复习一下  太困了，在调生物钟，根本看不进去内容，希望今天能按时入睡，shit!!!
