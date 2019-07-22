@@ -18,3 +18,151 @@
 开始撸代码
 
 写的过程遇到点问题，明天再搞吧 。。。。
+
+写了下面的代码结果超时了 通过样例是 44/59
+
+```
+class Solution:
+    def findPeakElement(self, nums: List[int]) -> int:
+        min_num = -888888888888888888888
+        data = [min_num] + nums + [min_num]
+        
+        s_ix = 0
+        
+        e_ix = len(data) -1
+        
+        mid = (s_ix + e_ix) // 2
+        
+        while True:
+            
+            
+            
+            if mid > 0 and mid < len(data) -1 and data[mid] > max(data[mid-1],data[mid+1]):
+                return mid-1
+            
+            elif data[mid] == data[s_ix] == data[e_ix]:
+                mid +=1
+            
+            if data[mid] >= data[s_ix] and data[mid] >= data[e_ix]:
+                
+                s_ix = (mid + s_ix) //2
+                
+                e_ix = (mid + e_ix) //2
+                
+                mid = (s_ix + e_ix) // 2
+                
+            elif data[mid] <=data[s_ix] and data[mid] <=data[e_ix]:
+                
+                s_ix = mid
+                
+                mid = e_ix
+                
+                e_ix = len(data)-1
+                
+            elif data[s_ix] <= data[mid] <= data[e_ix]:
+                
+                s_ix = mid
+                
+                mid = e_ix
+                
+                e_ix = len(data)-1
+            
+            elif data[s_ix] >= data[mid] >= data[e_ix]:
+                
+                e_ix = mid
+                
+                mid = s_ix
+                
+                s_ix = 0
+```
+
+后来我把代码改了一下，加了 pre_left, pre_right ,代码ac  ，但是只 beat 7.18%
+
+```
+class Solution:
+    def findPeakElement(self, nums: List[int]) -> int:
+        
+        min_num = -888888888888888888888
+        
+        data = [min_num] + nums + [min_num]
+        
+        pre_left,pre_right = 0,len(data)-1
+        
+        s_ix = 0
+        
+        e_ix = len(data) -1
+        
+        mid = (s_ix + e_ix) // 2
+        
+        while True:
+            
+            if mid > 0 and mid < len(data) -1 and data[mid] > max(data[mid-1],data[mid+1]):
+                return mid-1
+            
+            elif data[mid] == data[s_ix] == data[e_ix]:
+                mid +=1
+            
+            if data[mid] >= data[s_ix] and data[mid] >= data[e_ix]:
+                
+                pre_left = s_ix
+                
+                pre_right = e_ix
+                
+                s_ix = (mid + s_ix) //2
+                
+                e_ix = (mid + e_ix) //2
+                
+                mid = (s_ix + e_ix) // 2
+                
+            elif data[mid] <=data[s_ix] and data[mid] <=data[e_ix]:
+                
+                s_ix = mid
+                
+                mid = e_ix
+                
+                e_ix = pre_right
+                
+            elif data[s_ix] <= data[mid] <= data[e_ix]:
+                
+                s_ix = mid
+                
+                mid = e_ix
+                
+                e_ix = pre_right
+            
+            elif data[s_ix] >= data[mid] >= data[e_ix]:
+                
+                e_ix = mid
+                
+                mid = s_ix
+                
+                s_ix = pre_left
+                
+```
+
+我又写了一个O(n)的时间复杂度竟然跟我之前的 认为的Log（n） 代码速度是一样的
+
+```
+class Solution:
+    def findPeakElement(self, nums: List[int]) -> int:
+        
+        min_num = -888888888888888
+        
+        data = [min_num] + nums + [min_num]
+        
+        i = 1
+        
+        while i < len(data) -1:
+            if data[i] > data[i-1]:
+                if data[i] > data[i+1]:
+                    return i -1
+                else:
+                    i +=1
+            else:
+                if data[i] < data[i+1]:
+                    i+=1
+                else:
+                    i +=1
+```
+
+这个就难受了
