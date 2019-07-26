@@ -166,3 +166,56 @@ class Solution:
 ```
 
 这个就难受了
+
+网上看了几个 log n 的代码，跑了之后发现，他们跑出来的速度跟我一样。。。。
+
+
+这个代码跟我的代码的思想是一样的，但是为什么他的代码能如此简炼？
+
+他的问题建模比我的简单，就是不断调整mid 让他往高处走
+
+他的比较方式也是骚， 只跟mid + 1 比比较，就凭这个比较就能找到峰值。。。
+
+
+
+```
+class Solution:
+    def findPeakElement(self, nums):
+        if not nums:
+            return 0
+        l, r = 0, len(nums)-1
+        while l <= r:
+            if l == r:
+                return l
+            mid = l + (r-l)//2
+            # due to "mid" is always the left one if the length of the list is even,
+            # so "mid+1" is always valid.
+            if (mid-1 < 0 or nums[mid-1] < nums[mid]) and nums[mid] > nums[mid+1]:
+                return mid
+            elif nums[mid] > nums[mid+1]:
+                r = mid
+            else:
+                l = mid + 1
+```
+
+下面这个代码很神奇啊，这个能找到峰值吗？ my god....
+
+这个代码的思想 就是r 坐标定位在比右边值大的地方， l坐标定位比左边值小的地方。
+
+这里有个问题就是 r l 之间有没有可能没有 极大值，只有极小值。 答案是不可能，因为我们开始的两个端点都是 无穷小的值，
+
+然后这里为什么只跟 mid + 1 比较呢？ 因为如果mid 刚好落在那么 他的左右两边都存在极大值，任意一个返回值都可以，所以这里固定地向由移动
+
+下面这个也是相同地思想
+```
+def findPeakElement2(self, nums):
+    l, r = 0, len(nums)-1
+    while l < r:
+        mid = l + (r-l)//2
+        if nums[mid] > nums[mid+1]:
+            r = mid
+        else:
+            l = mid + 1
+    return l 
+    
+```
