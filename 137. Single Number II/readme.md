@@ -123,3 +123,42 @@ def convert(self,x):
 这个代码，那我就背下来吧。  这个题的这种解法就到此为止，我现在再看看剑指offer里面是怎么做的
 
 
+
+
+
+
+```
+
+class ListNode(object):
+    def __init__(self,x):
+        slef.val = x
+        self.next = None
+
+
+
+for i in range(int(n)):
+    mm = input()
+    num = input()
+    num = [int (m) for m in num.strip().split(' ')]
+
+    root = ListNode(0)
+    lenth = 1
+    ix_set_in = set()
+    ix_set_in.add(0)
+    ix_set_in.add(1)
+    ix_set_out = set()
+    for i in range(2,len(num)):
+        ix_set_out.add(i)
+    
+    for ix_item in ix_set_out:
+        if len(ix_set_in) == 1:
+            ix_set_in.add(ix_item)
+        
+
+        
+
+
+    
+
+
+```
