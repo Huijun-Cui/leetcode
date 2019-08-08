@@ -179,7 +179,48 @@ class Solution:
 
 
 
+我自己用c++实现的代码
 
+```
+class Solution {
+public:
+    bool search(vector<int>& nums, int target) {
+        
+        if(nums.size() == 0) return false;
+        
+        int l = 0;
+        int r = nums.size() - 1;
+        
+        int mid;
+        
+        while(l<r)
+        {
+            mid = (l + r) >>1;
+            
+            if(nums[mid] == target) return true;
+            
+            while(nums[mid] == nums[l] & mid != l) mid--;
+            
+            if(nums[l]<=nums[mid])
+            {
+                if(nums[l]<= target and target <= nums[mid]) r = mid;
+                else l = mid +1;
+            }
+            else if(nums[mid]<=nums[r])
+            {
+                if(nums[mid]<target and target <= nums[r]) l = mid + 1;
+                else r = mid;
+            }
+            
+        }
+        
+        if(nums[l] == target) return true;
+        
+        else return false;  
+        
+    }
+};
+```
 
 
 
