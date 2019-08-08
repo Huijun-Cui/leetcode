@@ -74,10 +74,61 @@ class Solution:
 这个代码逻辑非常清晰，在折办查找中应该遵信这种的方法
 
 
+这个代码我用c++又实现了一下，主要是想练习c++同时试一下yan神的代码模板，但是很不顺利啊
 
+```
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        
+        if(nums.size() == 0) return -1;
+        
+        
+        int l = 0;
+        int r = nums.size()-1;
+        int mid = 0;
+        
+        
+        
+        while(l<r)
+        {
+            mid = (l+r)>>1;
+            
+            if(nums[mid] == target) return mid;
+            
+            if(nums[l] <= nums[mid])
+            {
+                if(nums[l] <= target and target<= nums[mid]) r = mid;
+                else l = mid +1;
+            }
+            else if (nums[mid] <= nums[r])
+            {
+                if(nums[mid]< target and target <= nums[r]) l = mid + 1;
+                else r = mid;
+            }
+            
+            
+        }
+        if(nums[l] != target) return -1;
+        else return l;
+        
+        
+        
+    }
+    
+    
+};
+```
 
+在实现这个代码的时候，遇到一个问题，比如
 
+```
+[5,1]
+0
 
+```
+
+我开始的代码没有加两个等于号，以至于代码无限循环，加了这个之后就解决了。 唉。。。。
 
 
 
