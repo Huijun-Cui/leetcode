@@ -76,4 +76,98 @@ class Solution:
                     if _item[1] < ix:
                         result.append(list(_item) + [ix])
         return result
-                    
+ 
+ 
+ 
+ 这个题，我在做的时候，遇到一个麻烦是，要求unique result 。。。。。  我我记得这种问题一般都是进行排序
+
+
+这个问题我知道要用排序的思想去解决，但是我不知道具体的代码该如何去写啊，比如:
+
+```
+-2,-1,-1,-1
+```
+
+可是写这部分代码，我总是写成O(n**3)的时间复杂度。郁闷。。。。
+
+```
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        sort(nums,nums+ nums.size());
+        vector<vector<int>> ret;
+        
+        for(int i=0;i<nums.size();i++)
+        {
+            if(i > 0 and nums[i] ==nums[i-1]) continue;
+            for(int j = i+1; j<nums.size();j++)
+            {
+                if(j>i+1 and nums[j] == nums[j-1]) continue;
+                
+                for(int k = j+1;k<nums.size();k++)
+                {
+                    if(k>j+1 and nums[k] == nums[k-1]) continue;
+                    ......
+                }
+                
+                
+            }
+            
+        }
+        return ret;
+            
+    }
+};
+```
+
+我还是看看答案吧。。。。
+
+以下是我的代码，ac真的好困难
+
+```
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        
+        sort(nums.begin(),nums.end());
+        vector<vector<int>> ret;
+        
+        for(int i=0;i<nums.size();i++)
+        {
+            if(i>0 and nums[i] ==nums[i-1]) continue;
+            int target = -nums[i];
+            if(target<0) return ret;
+            
+            int begin = i+1;
+            int end = nums.size()-1;
+            
+            while(begin<end)
+            {
+                if(begin>i+1 and nums[begin] == nums[begin-1])
+                {
+                    begin++;
+                    continue;
+                }
+                if(end<nums.size()-1 and nums[end] == nums[end+1])
+                {
+                    end--;
+                    continue;
+                }
+                
+                if(nums[begin] + nums[end] > target) end--;
+                else if(nums[begin] + nums[end] < target) begin++;
+                else
+                {
+                    ret.push_back(vector<int> {nums[i],nums[begin],nums[end]});
+                    begin++;
+                    end --;
+                }
+            }
+            
+        }
+        return ret;
+    }
+};
+```
+
+写这个题，这么费劲的原因是，我一直想用2sum的思路去解决问题，但是2sum里面假定是没有重复的数字的。假如2sum里面是有重复数字的话，我们依然要用这个方法
