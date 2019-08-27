@@ -117,3 +117,34 @@ int minSubArrayLen(int s, vector<int>& nums)
     return (ans != INT_MAX) ? ans : 0;
 }
 ```
+以下是我用cpp刷的时候的代码，代码明显比之前好乐很多
+
+```
+class Solution {
+public:
+    int minSubArrayLen(int s, vector<int>& nums) {
+        if(nums.size() == 0) return 0;
+        int sum = nums[0],p_slow = 0,p_fast = 0;
+        int ret = INT_MAX;
+        while(p_fast < nums.size())
+        {
+            if(sum>= s) 
+            {
+                if(p_fast - p_slow + 1 < ret) ret = p_fast - p_slow + 1;
+                sum -= nums[p_slow];
+                p_slow ++;
+            }
+            else 
+            {
+                p_fast ++;
+                if(p_fast < nums.size()) sum += nums[p_fast];
+            }
+        }
+        if(ret != INT_MAX) return ret;
+        else return 0;
+        
+        
+        
+    }
+};
+```
